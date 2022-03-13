@@ -1,0 +1,31 @@
+pipeline {
+    agent any
+    environment {
+        ENV="/etc/api-template/prod"
+    }
+    stages {
+        stage('build') {
+            steps {
+                echo 'building...'
+                sh 'sudo docker build -t cbodonnell/api-template -f Dockerfile.prod .'
+            }
+        }
+        stage('test') {
+            steps {
+                echo 'testing...'
+            }
+        }
+        stage('deploy') {
+            steps {
+                echo 'deploying...'
+                sh 'sudo cp ./init_db.sql /etc/api-template/init_db.sql'
+                sh 'sudo ENV=$ENV docker-compose --env-file="$ENV.env" -f docker-compose.prod.yml up -d'
+            }
+        }
+    }
+    post {
+        cleanup {
+            deleteDir()
+        }
+    }
+}

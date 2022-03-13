@@ -1,0 +1,15 @@
+# Configuration
+config.*.json
+*.env
+*.pem
+
+# Binaries
+api-template
+api-template.exe
+
+# Static files
+static/*
+uploads/*
+
+# Database volumes
+postgres-data/*
